@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchProductRequest } from '../redux/actions';
 import Book from './Book';
+import Pagination from './Pagination';
 
 
 class BookList extends Component {
@@ -10,16 +11,19 @@ class BookList extends Component {
 	}
 
 	render(){
-        const { list } = this.props;
+        const { list, count } = this.props;
 
 		return (
-			<div className='card-list'>
-				{
-                    list && list.map(item =>
-                        <Book item={item} key={item.id} />
-                    )
-                }
-			</div>
+			<div>
+                <div className='card-list'>
+                    {
+                        list && list.map(item =>
+                            <Book item={item} key={item.id} />
+                        )
+                    }
+                </div>
+                <Pagination limit={10} count={count} />
+            </div>
 		);
 	}
 }
