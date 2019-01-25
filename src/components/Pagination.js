@@ -5,22 +5,47 @@ import {
 } from '../redux/actions';
 
 
-const Pagination = ({page, limit, count, toPage}) => {
-	let pArr = [];
-	for(let i=1; i<= Math.ceil(count/limit); i++){
+const Pagination = ({page, limit, count, toPage, maxPage}) => {
+	let totalPage = Math.ceil(count / limit);
+	let startPage = page - (Math.ceil(maxPage / 2) - 1);
+	let endPage = page + Math.floor(maxPage / 2);
+	if(startPage < 1){
+		startPage = 1;
+		endPage = startPage + (maxPage - 1);
+	}
+	if(endPage > totalPage){
+		endPage = totalPage;
+		startPage = endPage - (maxPage - 1);
+	}
+	startPage = startPage > 1 ? startPage : 1;
+	endPage = endPage < totalPage ? endPage : totalPage;
+
+	var pArr = [];
+	for(var i=startPage; i<=endPage; i++){
 		pArr.push(i);
 	}
-	console.log(22222);
+	
 	return(
-		Math.ceil(count/limit)>1
+		totalPage > 1 
 		?
-		<ul className="pagination">
+		<ul className="pagination text-center mt20 mb40">
 			{
-			pArr.map(item => 
-				<li className={(item === page)?'is-active':''} key={item}>
-					<a href="javascript:;" onClick={() => toPage(item)}>{item}</a>
-				</li>
-			)
+			startPage > 1 &&
+			[
+				<li key={1}><a href="javascript:;" onClick={() => toPage(1)}>&lt;</a></li>,
+				<li key={'prevPageGroup'}><a href="javascript:;" onClick={() => toPage(page - maxPage < 1 ? 1 : page - maxPage)}>...</a></li>
+			]
+			}
+			{
+			pArr.map((item) => {
+				return <li className={item == page ? 'is-active' : ''} key={item} onClick={() => toPage(item)}><a href="javascript:;">{item}</a></li>})
+			}
+			{
+			endPage < totalPage &&
+			[
+				<li key={'nextPageGroup'}><a href="javascript:;" onClick={() => toPage(page + maxPage > totalPage ? totalPage : page + maxPage)}>...</a></li>,
+				<li key={totalPage}><a href="javascript:;" onClick={() => toPage(totalPage)}>&gt;</a></li>
+			]
 			}
 		</ul>
 		:
@@ -32,6 +57,6 @@ const Pagination = ({page, limit, count, toPage}) => {
 export default connect(
 	null,
 	dispatch => ({
-		toPage: page => dispatch(filterRequest({page: page}))
+		toPage: page => dispatch(filterRequest({ page }))
 	})
 )(Pagination);

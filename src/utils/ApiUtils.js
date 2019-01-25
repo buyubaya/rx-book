@@ -16,3 +16,13 @@ export const fetchAPI = (params={}) => {
 		.then(res => res.json())
 	);
 };
+
+export function fetchData(url){
+	return new Promise((rs,rj) => {
+		fetch(url)
+		.then(res => res.json()) 
+		.then(data => {
+			rs(data);
+		});
+	});
+}

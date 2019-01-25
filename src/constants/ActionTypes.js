@@ -9,3 +9,10 @@ export const IS_FILTERED = 'IS_FILTERED';
 export const CLEAR_FILTER = 'CLEAR_FILTER';
 export const SHOW_ALERT = 'SHOW_ALERT';
 export const HIDE_ALERT = 'HIDE_ALERT';
+
+// CART
+export const UPDATE_CART = 'UPDATE_CART';
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+export const EDIT_CART_ITEM = 'EDIT_CART_ITEM';
+export const DESTROY_CART = 'DESTROY_CART';

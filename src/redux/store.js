@@ -4,6 +4,7 @@ import { createEpicMiddleware, combineEpics } from 'redux-observable';
 import productReducer from './reducers/productReducer';
 import filterReducer from './reducers/filterReducer';
 import statusReducer from './reducers/statusReducer';
+import cartReducer from './reducers/cartReducer';
 // EPICS
 import productEpic from './epics/productEpic';
 import filterEpic from './epics/filterEpic';
@@ -13,7 +14,8 @@ import clearFilterEpic from './epics/clearFilterEpic';
 const reducers = combineReducers({
     product: productReducer, 
     status: statusReducer, 
-    filter: filterReducer
+    filter: filterReducer,
+    cart: cartReducer
 });
 
 
