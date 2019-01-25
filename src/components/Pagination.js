@@ -10,6 +10,7 @@ const Pagination = ({page, limit, count, toPage}) => {
 	for(let i=1; i<= Math.ceil(count/limit); i++){
 		pArr.push(i);
 	}
+	console.log(22222);
 	return(
 		Math.ceil(count/limit)>1
 		?
