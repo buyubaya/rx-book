@@ -2199,16 +2199,20 @@ body {
 	background: #fbf8f0;
 }
 
+#root {
+  	max-width: 768px;
+  	margin: 0 auto;
+}
+
 .card-list {
 	display: flex;
-	justify-content: space-between;
 	align-items: flex-end;
 	flex-wrap: wrap;
 }
 
 .card-product {
-	width: 30%;
-	/* border: 1px solid #555; */
+	width: calc(25% - 10px);
+	margin: 0 5px;
 	box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.4);
 	border-radius: 5px;
 	overflow: hidden;
@@ -2223,4 +2227,14 @@ body {
 
 .btnAddToCart:hover {
 	background: #796120;
+}
+
+.pagination li {
+	margin: 0 5px;
+	border: 1px solid #a1822b;
+}
+
+.pagination li.is-active a {
+	background: #a1822b;
+	border: 2px solid #fff;
 }
