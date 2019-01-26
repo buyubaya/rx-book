@@ -1,13 +1,13 @@
 {
   "main.css": "/rx-book/static/css/main.8c90be2f.chunk.css",
-  "main.js": "/rx-book/static/js/main.192ca9f6.chunk.js",
-  "main.js.map": "/rx-book/static/js/main.192ca9f6.chunk.js.map",
+  "main.js": "/rx-book/static/js/main.c75c0482.chunk.js",
+  "main.js.map": "/rx-book/static/js/main.c75c0482.chunk.js.map",
   "static/js/1.54255a90.chunk.js": "/rx-book/static/js/1.54255a90.chunk.js",
   "static/js/1.54255a90.chunk.js.map": "/rx-book/static/js/1.54255a90.chunk.js.map",
   "runtime~main.js": "/rx-book/static/js/runtime~main.bb5b024a.js",
   "runtime~main.js.map": "/rx-book/static/js/runtime~main.bb5b024a.js.map",
   "static/css/main.8c90be2f.chunk.css.map": "/rx-book/static/css/main.8c90be2f.chunk.css.map",
   "index.html": "/rx-book/index.html",
-  "precache-manifest.87cffd4fc1d492bc7bf9898a67785236.js": "/rx-book/precache-manifest.87cffd4fc1d492bc7bf9898a67785236.js",
+  "precache-manifest.209884b7a8214022f91484a489ae873f.js": "/rx-book/precache-manifest.209884b7a8214022f91484a489ae873f.js",
   "service-worker.js": "/rx-book/service-worker.js"
 }
