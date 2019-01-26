@@ -2429,3 +2429,97 @@ body {
 #icon-cart.is-active + .cart-table {
 	display: block;
 }
+
+
+/* LOADING */
+.loading-fish-head {
+	display: inline-block;
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+	position: relative; 
+}
+  
+.loading-fish-head:before {
+	content: "";
+	display: block;
+	width: 0px;
+	height: 0px;
+	border-radius: 50%;
+	border: 1em solid transparent;
+	border-top: 1em solid #a1822b;
+	border-left: 1em solid #a1822b;
+	animation: loadingFishHeadB 0.5s linear infinite;
+}
+  
+.loading-fish-head:after {
+	content: "";
+	display: block;
+	width: 0px;
+	height: 0px;
+	border-radius: 50%;
+	border: 1em solid transparent;
+	border-bottom: 1em solid #a1822b;
+	border-right: 1em solid #a1822b;
+	position: absolute;
+	left: 0;
+	top: 0px;
+	transform: rotate(90deg);
+	animation: loadingFishHeadA 0.5s linear infinite;
+}
+  
+@keyframes loadingFishHeadB {
+	0%, 100% { transform: rotate(0deg) }
+	50% { transform: rotate(45deg) }
+}
+  
+@keyframes loadingFishHeadA {
+	0%, 100% { transform: rotate(90deg) }
+	50% { transform: rotate(45deg) }
+}
+
+.loading-fish-body, .loading-fish-tail {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	background: #a1822b; 
+}
+  
+.loading-fish-tail:before {
+	content: "";
+	display: block;
+	width: 0;
+	height: 0;
+	border: 0.75em solid transparent;
+	border-left: 1em solid #a1822b;
+	position: relative;
+	left: -1em;
+	top: -0.25em;
+	transform-origin: right center;
+	animation: loadingFishTail 1s linear infinite; 
+}
+  
+.loading-fish-body.v1 {
+	animation: loadingFishBody 1s linear infinite; }
+  
+.loading-fish-body.v2 {
+	animation: loadingFishBody 1s 0.2s linear infinite; }
+  
+.loading-fish-body.v3 {
+	animation: loadingFishBody 1s 0.4s linear infinite; }
+  
+.loading-fish-tail {
+	animation: loadingFishBody 1s 0.6s linear infinite; }
+  
+@keyframes loadingFishBody {
+	0%, 100% { transform: translateY(0) }
+	25% { transform: translateY(-10px) }
+	75% { transform: translateY(10px) } 
+}
+  
+@keyframes loadingFishTail {
+	0%, 100% { transform: rotate(0deg) }
+	25% { transform: rotate(45deg) }
+	75% { transform: rotate(-45deg) } 
+}

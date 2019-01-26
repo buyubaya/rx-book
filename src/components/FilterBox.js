@@ -34,16 +34,18 @@ class FilterBox extends React.Component {
     }
 
     render(){
-        const { placeholder } = this.props;
-
+        const { placeholder, filterParams, filterName } = this.props;
+        
         return(
             this.state.list.length > 0
             ?
-            <select className="filter-box" onChange={this.handleFilter}>
+            <select className="filter-box" value={filterParams[filterName] || ''} onChange={this.handleFilter}>
                 <option value={''} key={'empty'}>{placeholder || 'Select'}</option>
                 {
                     this.state.list.map(item =>
-                        <option value={item.id} key={item.id}>{item.name}</option>
+                        <option key={item.id} value={item.id}>
+                            {item.name}
+                        </option>
                     )
                 }
             </select>
