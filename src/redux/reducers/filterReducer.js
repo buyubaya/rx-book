@@ -5,7 +5,7 @@ import {
 
 
 export const defaultFilter = {
-	limit: 10,
+	limit: 8,
 	page: 1
 };
 
