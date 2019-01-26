@@ -2353,15 +2353,16 @@ body {
 /* CART */
 .cart-table {
 	text-align: center;
-	overflow-x: scroll;
 	width: calc(100% - 30px);
 	max-width: 640px;
+	max-height: 350px;
+	overflow: scroll;
 	position: fixed;
 	top: 150px;
 	left: 50%;
 	transform: translateX(-50%);
 	background: #fff;
-	border: 1px solid #555;
+  	border: 1px solid #555;
 }
 
 .cart-table table {

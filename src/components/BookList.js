@@ -23,6 +23,7 @@ class BookList extends Component {
 	}
 
 	handleClickIconCart(e){
+		e.stopPropagation();
 		this.icon_cart.classList.toggle('is-active');
 	}
 

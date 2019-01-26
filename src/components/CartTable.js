@@ -24,10 +24,7 @@ class CartTable extends React.Component {
     handleClick(e){
         if(this.cart_table && !this.cart_table.contains(e.target)){
             const iconCart = document.getElementById('icon-cart');
-            console.log(iconCart.classList.contains('is-active'));
-            // if(iconCart.classList.contains('is-active')){
-            //     iconCart.classList.remove('is-active');
-            // }
+            iconCart.classList.remove('is-active');
         }
     }
 
