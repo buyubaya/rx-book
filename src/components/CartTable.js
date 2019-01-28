@@ -40,9 +40,10 @@ class CartTable extends React.Component {
 
     render(){
         const { cart } = this.props;
+        const totalPrice = cart.list && cart.list.reduce((total, current) => total + current.qty * current.price, 0);
         
         return(
-            <div className='cart-table' ref={el => this.cart_table = el}>
+            <div className='cart-table' ref={el => this.cart_table = el} onClick={e => e.stopPropagation()}>
                 <table>
                     <thead>
                         <tr className='tr-heading'>
@@ -74,6 +75,14 @@ class CartTable extends React.Component {
                             )
                         }
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colSpan={3}></td>
+                            <td className='td-total-price td-total-price-text'>Total</td>
+                            <td className='td-total-price td-total-price-value'>{totalPrice}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         );
