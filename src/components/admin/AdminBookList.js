@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ADMIN_API_URL, fetchData } from '../../utils/ApiUtils';
 
 
@@ -9,14 +10,48 @@ class AdminBookList extends React.Component {
         this.state = {
             bookList: []
         };
+
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
     }
+
+    static contextTypes = {
+        editItem: PropTypes.object,
+        handleEdit: PropTypes.func,
+        handleAdd: PropTypes.func
+    };
 
     componentDidMount(){
         fetchData(ADMIN_API_URL + '/book')
         .then(data => {
-            console.log('HELLO', data);
             this.setState({ bookList: data });
         });
+    }
+
+    handleEdit(item){
+        this.context.handleEdit && this.context.handleEdit(item);
+        // fetch('http://nodejs-book-api.herokuapp.com/book', {
+        //     method: 'PUT'
+        // })
+        // .then(res => res.json())
+        // .then(json => {
+        //     console.log('UPDATE SUCCESS', json);
+        // });
+    }
+
+    handleRemove(id){
+        fetch(`http://nodejs-book-api.herokuapp.com/book/${id}`, {
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(json => {
+            console.log('DELETE SUCCESS', json);
+        });
+    }
+
+    handleAdd(){
+        this.context.handleAdd && this.context.handleAdd();
     }
 
     render(){
@@ -24,6 +59,9 @@ class AdminBookList extends React.Component {
 
         return(
             <div className='admin-table-area'>
+                <div className='row mb10'>
+                    <button type='button' className='btn-form fr' onClick={this.handleAdd}>Add</button>
+                </div>
                 <table className='admin-list-table'>
                     <thead>
                         <tr>
@@ -43,8 +81,8 @@ class AdminBookList extends React.Component {
                                     <td className='cell-200'>{item.name}</td>
                                     <td className='cell-100'>{item.price}</td>
                                     <td className='cell-100'>
-                                        <span className='btn'>Edit</span>
-                                        <span className='btn'>X</span>
+                                        <span className='btn' onClick={() => this.handleEdit(item)}>Edit</span>
+                                        <span className='btn' onClick={() => this.handleRemove(item._id)}>X</span>
                                     </td>
                                 </tr>
                             )

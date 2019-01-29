@@ -1,5 +1,6 @@
 import React from 'react';
-import { withFormik, Field, setNestedObjectValues } from 'formik';
+import PropTypes from 'prop-types';
+import { withFormik } from 'formik';
 import FormBuilder from './FormBuilder';
 
 
@@ -7,15 +8,16 @@ const BookFormBuilder = withFormik({
     displayName: 'AdminBookForm',
     enableReinitialize: true,
 
-    mapPropsToValues: () => ({
-        name: '',
-        price: '',
+    mapPropsToValues: ({ editItem }) => ({
+        name: editItem ? editItem.name : '',
+        price: editItem ? editItem.price : '',
         img: '',
-        description: '',
-        category: '',
-        author: '',
-        brand: '',
-        description: ''
+        category: editItem ? editItem.category._id : '',
+        author: editItem ? editItem.author._id : '',
+        brand: editItem ? editItem.brand._id : '',
+        description: editItem ? editItem.description : '',
+        mode: editItem ? 'EDIT' : 'ADD',
+        _id: editItem ? editItem._id : ''
     }),
 
     validate: values => {
@@ -32,24 +34,40 @@ const BookFormBuilder = withFormik({
         return errors;
     },
 
-    handleSubmit: (values, { setSubmitting, validateForm, setValues, resetForm }) => {
+    onReset: (values) => {
+        console.log('RESET', values);
+    },
+
+    handleSubmit: (values, { setSubmitting, validateForm, resetForm }) => {
         validateForm();
-        
+
+        let method;
+        let apiEndpoint;
+        if(values.mode === 'EDIT'){
+            method = 'PUT';
+            apiEndpoint = `http://nodejs-book-api.herokuapp.com/book/${values._id}`;
+        }
+        if(values.mode === 'ADD'){
+            method = 'POST';
+            apiEndpoint = 'http://nodejs-book-api.herokuapp.com/book';
+        }
+
         let formData = new FormData();
-        for(let field in values){
+        for (let field in values) {
             formData.append(field, values[field]);
         }
         
-        fetch('http://nodejs-book-api.herokuapp.com/book', {
-            method: 'POST',
+        fetch(apiEndpoint, {
+            method,
             body: formData
         })
         .then(res => res.json())
         .then(json => {
             setSubmitting(false);
             resetForm();
-            console.log('POST SUCCESS', json);
+            console.log('SUBMIT SUCCESS', json);
         });
+        
     },
 
     validateOnChange: false,
@@ -102,6 +120,11 @@ class AdminBookForm extends React.Component {
         };
     }
 
+    static contextTypes = {
+        editItem: PropTypes.object,
+        handleEdit: PropTypes.func
+    };
+
     componentDidMount() {
         const cPromise = fetch('http://nodejs-book-api.herokuapp.com/category')
             .then(res => res.json());
@@ -115,20 +138,20 @@ class AdminBookForm extends React.Component {
                 this.setState(state => {
                     let formBuilderData = [...state.formBuilderData];
                     formBuilderData = formBuilderData.map(item => {
-                        if(item.fieldName === 'category'){
+                        if (item.fieldName === 'category') {
                             item.data = this._getChildCategory(data[0]);
                         }
-                        if(item.fieldName === 'author'){
+                        if (item.fieldName === 'author') {
                             item.data = data[1];
                         }
-                        if(item.fieldName === 'brand'){
+                        if (item.fieldName === 'brand') {
                             item.data = data[2];
                         }
 
                         return item;
                     });
 
-                    return {...state, formBuilderData};
+                    return { ...state, formBuilderData };
                 });
             });
     }
@@ -149,10 +172,17 @@ class AdminBookForm extends React.Component {
         return children;
     }
 
-    render(){
-        return(
-            <BookFormBuilder 
+    componentWillReceiveProps(props) {
+        console.log('NEW', props.editItem);
+    }
+
+    render() {
+        const { editItem } = this.props;
+
+        return (
+            <BookFormBuilder
                 formBuilderData={this.state.formBuilderData}
+                editItem={editItem}
             />
         );
     }

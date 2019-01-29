@@ -41,9 +41,7 @@ class BookList extends Component {
 							<span className='notification'>{totalQty}</span>
 						}
 					</span>
-					{
-						cart.list && cart.list.length > 0 && <CartTable />
-					}
+					<CartTable />
 				</div>
 				<div className='filter-area'>
 					<div className='filter-row row'>

@@ -3,30 +3,58 @@ import { Field } from 'formik';
 
 
 class FormBuilder extends React.Component {
+    constructor(props, context){
+        super(props, context);
+
+        this.stopPropagation = this.stopPropagation.bind(this);
+    }
+
     getFieldComponent(item){
-        const { setFieldValue } = this.props;
+        const { values, setFieldValue } = this.props;
 
         switch(item.component){
             case 'text':
-                return <Field type='text' name={item.fieldName} className='input' />;
+                return(
+                    <Field 
+                        type='text' 
+                        name={item.fieldName} 
+                        className='input' 
+                    />
+                );
             case 'number':
-                return <Field type='number' name={item.fieldName} className='input' />;
+                return(
+                    <Field 
+                        type='number' 
+                        name={item.fieldName} 
+                        className='input'
+                    />
+                );
             case 'textarea':
-                return <Field component='textarea' name={item.fieldName} className='input input-textarea' />;
+                return(
+                    <Field 
+                        component='textarea' 
+                        name={item.fieldName} 
+                        className='input input-textarea'
+                    />
+                );
             case 'file':
                 return(
                     <input 
                         name={item.fieldName}
                         type='file'
                         className='input input-file'
-                        onChange={(event) => {
+                        onChange={event => {
                             setFieldValue && setFieldValue(item.fieldName, event.currentTarget.files[0]);
                         }}
                     />
                 );
             case 'select':
                 return(
-                    <Field component='select' name={item.fieldName} className='input input-select'>
+                    <Field 
+                        component='select' 
+                        name={item.fieldName} 
+                        className='input input-select' 
+                    >
                         <option value=''>Select</option>
                         {
                             item.data && item.data.map(x => {
@@ -38,8 +66,18 @@ class FormBuilder extends React.Component {
                     </Field>
                 );
             default:
-                return <Field type='text' name={item.fieldName} className='input' />;
+                return(
+                    <Field 
+                        type='text' 
+                        name={item.fieldName} 
+                        className='input' 
+                    />
+                );
         }
+    }
+
+    stopPropagation(e){
+        e.stopPropagation();
     }
 
     render(){
@@ -49,6 +87,7 @@ class FormBuilder extends React.Component {
             errors,
             handleChange,
             handleBlur,
+            handleReset,
             handleSubmit,
             setFieldValue,
             formBuilderData
@@ -56,7 +95,7 @@ class FormBuilder extends React.Component {
 
         
         return (
-            <div className='admin-form-area'>
+            <div className='admin-form-area' onClick={this.stopPropagation}>
                 <form onSubmit={handleSubmit}>
                     {
                         formBuilderData && formBuilderData.map(item =>
@@ -78,6 +117,7 @@ class FormBuilder extends React.Component {
                         </div>
                     }
 
+                    <button type="button" className='btn-form mr20' onClick={handleReset}>Reset</button>
                     <button type="submit" className='btn-form'>Submit</button>
                 </form>
             </div>

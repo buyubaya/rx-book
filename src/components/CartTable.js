@@ -13,13 +13,13 @@ class CartTable extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    componentDidMount(){
-        window.addEventListener('click', this.handleClick);
-    }
+    // componentDidMount(){
+    //     window.addEventListener('click', this.handleClick);
+    // }
 
-    componentWillUnMount(){
-        window.removeEventListener('click', this.handleClick);
-    }
+    // componentWillUnMount(){
+    //     window.removeEventListener('click', this.handleClick);
+    // }
 
     handleClick(e){
         if(this.cart_table && !this.cart_table.contains(e.target)){
@@ -43,47 +43,56 @@ class CartTable extends React.Component {
         const totalPrice = cart.list && cart.list.reduce((total, current) => total + current.qty * current.price, 0);
         
         return(
-            <div className='cart-table' ref={el => this.cart_table = el} onClick={e => e.stopPropagation()}>
-                <table>
-                    <thead>
-                        <tr className='tr-heading'>
-                            <td className='td-img'>Image</td>
-                            <td className='td-name'>Name</td>
-                            <td className='td-qty'>Quantity</td>
-                            <td className='td-price-unit'>Price / Unit</td>
-                            <td className='td-price'>Price</td>
-                            <td className='td-edit'>Edit</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            cart.list.map(item =>
-                                <tr key={item.id}>
-                                    <td className='td-img'><img className='w100p' src={API_URL+'/public/images/'+item.img} alt="" /></td>
-                                    <td className='td-name'>{item.name}</td>
-                                    <td className='td-qty'>
-                                        <div className='qty-group'>
-                                            <span className='btn-edit-cart' onClick={() => this.editQty(item.id, item.qty + 1)}>+</span>
-                                            <span className='btn-edit-cart'>{item.qty}</span>
-                                            <span className='btn-edit-cart' onClick={() => this.editQty(item.id, item.qty - 1)}>-</span>
-                                        </div>
-                                    </td>
-                                    <td className='td-price-unit'>{item.price}</td>
-                                    <td className='td-price'>{item.price * item.qty}</td>
-                                    <td className='td-edit'><span className='btn-edit-cart' onClick={() => this.removeFromCart(item.id)}>X</span></td>
+            <div className='overlay cart-table-overlay' onClick={this.handleClick}>
+                <div className='cart-table' ref={el => this.cart_table = el} onClick={e => e.stopPropagation()}>
+                    {
+                        (cart && cart.list && cart.list.length > 0)
+                        ?
+                        <table>
+                            <thead>
+                                <tr className='tr-heading'>
+                                    <td className='td-img'>Image</td>
+                                    <td className='td-name'>Name</td>
+                                    <td className='td-qty'>Quantity</td>
+                                    <td className='td-price-unit'>Price / Unit</td>
+                                    <td className='td-price'>Price</td>
+                                    <td className='td-edit'>Edit</td>
                                 </tr>
-                            )
-                        }
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colSpan={3}></td>
-                            <td className='td-total-price td-total-price-text'>Total</td>
-                            <td className='td-total-price td-total-price-value'>{totalPrice}</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                            </thead>
+                            <tbody>
+                                {
+                                cart.list.map(item =>
+                                        <tr key={item.id}>
+                                            <td className='td-img'><img className='w100p' src={API_URL+'/public/images/'+item.img} alt="" /></td>
+                                            <td className='td-name'>{item.name}</td>
+                                            <td className='td-qty'>
+                                                <div className='qty-group'>
+                                                    <span className='btn-edit-cart' onClick={() => this.editQty(item.id, item.qty + 1)}>+</span>
+                                                    <span className='btn-edit-cart'>{item.qty}</span>
+                                                    <span className='btn-edit-cart' onClick={() => this.editQty(item.id, item.qty - 1)}>-</span>
+                                                </div>
+                                            </td>
+                                            <td className='td-price-unit'>{item.price}</td>
+                                            <td className='td-price'>{item.price * item.qty}</td>
+                                            <td className='td-edit'><span className='btn-edit-cart' onClick={() => this.removeFromCart(item.id)}>X</span></td>
+                                        </tr>
+                                    )
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan={3}></td>
+                                    <td className='td-total-price td-total-price-text'>Total</td>
+                                    <td className='td-total-price td-total-price-value'>{totalPrice}</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        :
+                        <div className='p20'>No item in cart</div>
+                    }
+                    
+                </div>
             </div>
         );
     }
