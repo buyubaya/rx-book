@@ -1,16 +1,20 @@
 import React from 'react';
 import { withFormik, Field, setNestedObjectValues } from 'formik';
 import FormBuilder from './FormBuilder';
-import AdminBookPage from '../../pages/admin/AdminBookPage';
 
 
 const BookFormBuilder = withFormik({
     displayName: 'AdminBookForm',
+    enableReinitialize: true,
 
     mapPropsToValues: () => ({
         name: '',
         price: '',
         img: '',
+        description: '',
+        category: '',
+        author: '',
+        brand: '',
         description: ''
     }),
 
@@ -28,29 +32,24 @@ const BookFormBuilder = withFormik({
         return errors;
     },
 
-    handleSubmit: (values, { setSubmitting, validateForm, setValues }) => {
+    handleSubmit: (values, { setSubmitting, validateForm, setValues, resetForm }) => {
         validateForm();
         
         let formData = new FormData();
         for(let field in values){
             formData.append(field, values[field]);
         }
-        setValues({
-            name: '',
-            price: '',
-            img: '',
-            description: ''
+        
+        fetch('http://nodejs-book-api.herokuapp.com/book', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(json => {
+            setSubmitting(false);
+            resetForm();
+            console.log('POST SUCCESS', json);
         });
-        // fetch('http://nodejs-book-api.herokuapp.com/book', {
-        //     method: 'POST',
-        //     body: formData
-        // })
-        // .then(res => res.json())
-        // .then(json => {
-        //     setSubmitting(false);
-        //     setValues({});
-        //     console.log('POST SUCCESS', json);
-        // });
     },
 
     validateOnChange: false,

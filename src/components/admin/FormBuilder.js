@@ -1,5 +1,5 @@
 import React from 'react';
-import { withFormik, Field } from 'formik';
+import { Field } from 'formik';
 
 
 class FormBuilder extends React.Component {
@@ -51,8 +51,7 @@ class FormBuilder extends React.Component {
             handleBlur,
             handleSubmit,
             setFieldValue,
-            formBuilderData,
-            formikData
+            formBuilderData
         } = this.props;
 
         
@@ -79,7 +78,7 @@ class FormBuilder extends React.Component {
                         </div>
                     }
 
-                    <button type="submit" className='btn btn-submit'>Submit</button>
+                    <button type="submit" className='btn-form'>Submit</button>
                 </form>
             </div>
         );

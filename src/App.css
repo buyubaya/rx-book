@@ -2532,7 +2532,21 @@ body {
 }
 
 
-/* ADMIN */
+/* ADMIN FORM */
+.btn {
+	display: inline-block;
+    color: #fff;
+	background: #a1822b;
+	border: 1px solid #796120;
+	border-radius: 2px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 2px;
+	cursor: pointer;
+}
+
 .admin-form-area {
 	width: 300px;
 	margin: 0 auto;
@@ -2544,11 +2558,11 @@ body {
 
 .admin-form-area .input-group {
 	width: 100%;
-	margin-bottom: 40px;
+	margin-bottom: 20px;
 }
 
 .admin-form-area .input-label {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 
 .admin-form-area .input {
@@ -2565,7 +2579,7 @@ body {
 	min-height: 200px;
 }
 
-.admin-form-area .btn {
+.admin-form-area .btn-form {
 	color: #fff;
 	font-weight: bold;
 	background: #a1822b;
@@ -2582,4 +2596,30 @@ body {
 	padding: 5px;
 	line-height: 1.5;
 	margin-bottom: 20px;
+}
+
+
+/* ADMIN BOOk LIST */
+.admin-list-table {
+	width: 100%;
+	background: #fff;
+	border: 1px solid #a1822b;
+}
+
+.admin-list-table thead {
+	color: #fff;
+	background: #a1822b;
+}
+
+.admin-list-table td {
+	padding: 5px;
+	vertical-align: middle;
+}
+
+.admin-list-table tbody > td:nth-child(2n) {
+	background: #e1e1e1;
+}
+
+.admin-list-table .btn {
+	margin: 0 5px;
 }

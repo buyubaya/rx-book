@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 
 
 export const API_URL = 'https://hieu1801.000webhostapp.com';
+export const ADMIN_API_URL = 'http://nodejs-book-api.herokuapp.com';
 
 export const fetchAPI = (params={}) => {
 	let q = [];
