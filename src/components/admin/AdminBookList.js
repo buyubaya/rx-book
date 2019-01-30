@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ADMIN_API_URL, fetchData } from '../../utils/ApiUtils';
+import { fetchData } from '../../utils/ApiUtils';
+import { ADMIN_API_URL } from '../../constants/ApiUrls';
 
 
 class AdminBookList extends React.Component {
@@ -31,13 +32,6 @@ class AdminBookList extends React.Component {
 
     handleEdit(item){
         this.context.handleEdit && this.context.handleEdit(item);
-        // fetch('http://nodejs-book-api.herokuapp.com/book', {
-        //     method: 'PUT'
-        // })
-        // .then(res => res.json())
-        // .then(json => {
-        //     console.log('UPDATE SUCCESS', json);
-        // });
     }
 
     handleRemove(id){
