@@ -69,7 +69,10 @@ class AdminBookPage extends React.Component {
 
     _removeItemFromBookList(id){
         console.log('DELETE', id);
-        fetch(`http://localhost:4000/book/${id}`, {
+        // fetch(`https://nodejs-book-api.herokuapp.com/book/${id}`, {
+        //     method: 'DELETE'
+        // })
+        fetch(`http://localhost:3000/book/${id}`, {
             method: 'DELETE'
         })
         .then(res => res.json())
@@ -84,20 +87,28 @@ class AdminBookPage extends React.Component {
 
     _addItemToBookList(item){
         let { bookList } = this.state;
+        item.category = { _id: item.category };
+        item.author = { _id: item.author };
+        item.brand = { _id: item.brand };
         bookList.push(item);
         this.setState({ bookList });
     }
 
     _handleSubmitSuccess(data){
-        console.log('AFTER SUBMIT');
-        
-        // const { editItem } = this.props;
+        let { bookList, editItem } = this.state;
 
-        // if(editItem === null){
-        //     const { _addItemToBookList } = this._addItemToBookList;
-        //     _addItemToBookList(data);
-        //     console.log('ADD ITEM TO BOOK LIST', data);
-        // }
+        if(editItem === null){
+            this._addItemToBookList(data);
+        }
+        else {            
+            for(let i=0, len=bookList.length; i<len; i++){
+                if(bookList[i]._id === editItem._id){
+                    bookList[i] = data;
+                    break;
+                }
+            }
+            this.setState({ bookList });
+        }
 
         this.hideForm();
     }

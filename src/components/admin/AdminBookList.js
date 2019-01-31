@@ -54,7 +54,7 @@ class AdminBookList extends React.Component {
                     <tbody>
                         {
                             bookList && bookList.map((item, index) =>
-                                <tr key={item._id}>
+                                <tr key={index}>
                                     <td className='cell-50'>{index + 1}</td>
                                     <td className='cell-100'><img src={item.img} className='w100p' /></td>
                                     <td className='cell-200'>{item.name}</td>

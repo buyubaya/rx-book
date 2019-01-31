@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import FormBuilder from './FormBuilder';
+import { ADMIN_API_URL } from '../../constants/ApiUrls';
 
 
 const BookFormBuilder = withFormik({
@@ -15,7 +16,7 @@ const BookFormBuilder = withFormik({
         category: editItem ? editItem.category._id : '',
         author: editItem ? editItem.author._id : '',
         brand: editItem ? editItem.brand._id : '',
-        description: editItem ? editItem.description : ''
+        description: (editItem && editItem.description !== 'null') ? editItem.description : ''
     }),
 
     validate: values => {
@@ -44,11 +45,11 @@ const BookFormBuilder = withFormik({
         const id = editItem ? editItem._id : '';
         if (editItem) {
             method = 'PUT';
-            apiEndpoint = `http://nodejs-book-api.herokuapp.com/book/${id}`;
+            apiEndpoint = `${'http://localhost:3000'}/book/${id}`;
         }
         else {
             method = 'POST';
-            apiEndpoint = 'http://nodejs-book-api.herokuapp.com/book';
+            apiEndpoint = `${'http://localhost:3000'}/book`;
         }
 
         let formData = new FormData();
@@ -56,23 +57,19 @@ const BookFormBuilder = withFormik({
             formData.append(field, values[field]);
         }
 
-        // fetch(apiEndpoint, {
-        //     method,
-        //     body: formData
-        // })
-        // .then(res => res.json())
-        // .then(json => {
-        //     setSubmitting(false);
-        //     resetForm();
-        //     if (onSubmitSuccess) {
-        //         onSubmitSuccess(json);
-        //     }
-        // })
-        // .catch(err => console.log(err));
-
-        if (onSubmitSuccess) {
-            onSubmitSuccess('HAHA');
-        }
+        fetch(apiEndpoint, {
+            method,
+            body: formData
+        })
+        .then(res => res.json())
+        .then(json => {
+            setSubmitting(false);
+            resetForm();
+            if (onSubmitSuccess) {
+                onSubmitSuccess(json);
+            }
+        })
+        .catch(err => console.log(err));
     },
 
     validateOnChange: false,
@@ -136,8 +133,6 @@ class AdminBookForm extends React.Component {
     };
 
     componentDidMount() {
-        this._isMounted = true;
-
         const cPromise = fetch('http://nodejs-book-api.herokuapp.com/category')
             .then(res => res.json());
         const aPromise = fetch('http://nodejs-book-api.herokuapp.com/author')
@@ -168,10 +163,6 @@ class AdminBookForm extends React.Component {
             });
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     _getChildCategory(data) {
         let parents = [];
 
@@ -189,7 +180,7 @@ class AdminBookForm extends React.Component {
     }
 
     _handleSubmitSuccess(data) {
-        this.context._handleSubmitSuccess && this.context._handleSubmitSuccess(this);
+        this.context._handleSubmitSuccess && this.context._handleSubmitSuccess(data);
     }
 
     render() {
