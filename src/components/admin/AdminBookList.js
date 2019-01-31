@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fetchData } from '../../utils/ApiUtils';
-import { ADMIN_API_URL } from '../../constants/ApiUrls';
 
 
 class AdminBookList extends React.Component {
     constructor(props, context){
         super(props, context);
-
-        this.state = {
-            bookList: []
-        };
 
         this.handleEdit = this.handleEdit.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
@@ -18,30 +12,21 @@ class AdminBookList extends React.Component {
     }
 
     static contextTypes = {
+        bookList: PropTypes.array,
         editItem: PropTypes.object,
         handleEdit: PropTypes.func,
-        handleAdd: PropTypes.func
+        handleAdd: PropTypes.func,
+        _removeItemFromBookList: PropTypes.func
     };
-
-    componentDidMount(){
-        fetchData(ADMIN_API_URL + '/book')
-        .then(data => {
-            this.setState({ bookList: data });
-        });
-    }
 
     handleEdit(item){
         this.context.handleEdit && this.context.handleEdit(item);
     }
 
     handleRemove(id){
-        fetch(`http://nodejs-book-api.herokuapp.com/book/${id}`, {
-            method: 'DELETE'
-        })
-        .then(res => res.json())
-        .then(json => {
-            console.log('DELETE SUCCESS', json);
-        });
+        if(window.confirm('Do you want to remove it ?')){
+            this.context._removeItemFromBookList && this.context._removeItemFromBookList(id);
+        }
     }
 
     handleAdd(){
@@ -49,7 +34,7 @@ class AdminBookList extends React.Component {
     }
 
     render(){
-        const { bookList } = this.state;
+        const { bookList } = this.context;
 
         return(
             <div className='admin-table-area'>
@@ -71,7 +56,7 @@ class AdminBookList extends React.Component {
                             bookList && bookList.map((item, index) =>
                                 <tr key={item._id}>
                                     <td className='cell-50'>{index + 1}</td>
-                                    <td className='cell-100'><img src={`${ADMIN_API_URL}/public/images/${item.img}`} className='w100p' /></td>
+                                    <td className='cell-100'><img src={item.img} className='w100p' /></td>
                                     <td className='cell-200'>{item.name}</td>
                                     <td className='cell-100'>{item.price}</td>
                                     <td className='cell-100'>

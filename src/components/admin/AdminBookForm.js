@@ -15,9 +15,7 @@ const BookFormBuilder = withFormik({
         category: editItem ? editItem.category._id : '',
         author: editItem ? editItem.author._id : '',
         brand: editItem ? editItem.brand._id : '',
-        description: editItem ? editItem.description : '',
-        mode: editItem ? 'EDIT' : 'ADD',
-        _id: editItem ? editItem._id : ''
+        description: editItem ? editItem.description : ''
     }),
 
     validate: values => {
@@ -38,16 +36,17 @@ const BookFormBuilder = withFormik({
         console.log('RESET', values);
     },
 
-    handleSubmit: (values, { setSubmitting, validateForm, resetForm }) => {
+    handleSubmit: (values, { setSubmitting, validateForm, resetForm, props: { editItem, onSubmitSuccess } }) => {
         validateForm();
-
+        
         let method;
         let apiEndpoint;
-        if(values.mode === 'EDIT'){
+        const id = editItem ? editItem._id : '';
+        if(editItem){
             method = 'PUT';
-            apiEndpoint = `http://nodejs-book-api.herokuapp.com/book/${values._id}`;
+            apiEndpoint = `http://nodejs-book-api.herokuapp.com/book/${id}`;
         }
-        if(values.mode === 'ADD'){
+        else{
             method = 'POST';
             apiEndpoint = 'http://nodejs-book-api.herokuapp.com/book';
         }
@@ -56,7 +55,7 @@ const BookFormBuilder = withFormik({
         for (let field in values) {
             formData.append(field, values[field]);
         }
-        
+
         fetch(apiEndpoint, {
             method,
             body: formData
@@ -65,9 +64,10 @@ const BookFormBuilder = withFormik({
         .then(json => {
             setSubmitting(false);
             resetForm();
-            console.log('SUBMIT SUCCESS', json);
+            if(onSubmitSuccess){
+                onSubmitSuccess(json);
+            }
         });
-        
     },
 
     validateOnChange: false,
@@ -118,11 +118,14 @@ class AdminBookForm extends React.Component {
                 }
             ]
         };
+
+        this._handleSubmitSuccess = this._handleSubmitSuccess.bind(this);
     }
 
     static contextTypes = {
         editItem: PropTypes.object,
-        handleEdit: PropTypes.func
+        handleEdit: PropTypes.func,
+        _addItemToBookList: PropTypes.func
     };
 
     componentDidMount() {
@@ -172,8 +175,14 @@ class AdminBookForm extends React.Component {
         return children;
     }
 
-    componentWillReceiveProps(props) {
-        console.log('NEW', props.editItem);
+    _handleSubmitSuccess(data){
+        const { editItem } = this.props;
+
+        if(editItem === null){
+            const { _addItemToBookList } = this._addItemToBookList;
+            _addItemToBookList(data);
+            console.log('ADD ITEM TO BOOK LIST', data);
+        }
     }
 
     render() {
@@ -183,6 +192,7 @@ class AdminBookForm extends React.Component {
             <BookFormBuilder
                 formBuilderData={this.state.formBuilderData}
                 editItem={editItem}
+                onSubmitSuccess={this._handleSubmitSuccess}
             />
         );
     }

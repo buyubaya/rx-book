@@ -6,6 +6,7 @@ import BookList from './components/BookList';
 import AdminPage from './pages/admin/AdminPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminBookPage from './pages/admin/AdminBookPage';
+import AdminLoginPage from './pages/admin/AdminLoginPage';
 
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
 			<BrowserRouter>
 				<Switch>
 					<Route path='/' exact component={BookList} />
+					<Route path='/admin/login' exact component={AdminLoginPage} />
 					<Route path='/admin'>
 						<AdminPage>
 							<Route path='/admin/dashboard' component={AdminDashboardPage} />
