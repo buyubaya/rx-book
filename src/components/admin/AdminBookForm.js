@@ -45,11 +45,13 @@ const BookFormBuilder = withFormik({
         const id = editItem ? editItem._id : '';
         if (editItem) {
             method = 'PUT';
-            apiEndpoint = `${'http://localhost:3000'}/book/${id}`;
+            // apiEndpoint = `${'http://localhost:3000'}/book/${id}`;
+            apiEndpoint = `${ADMIN_API_URL}/book/${id}`;
         }
         else {
             method = 'POST';
-            apiEndpoint = `${'http://localhost:3000'}/book`;
+            // apiEndpoint = `${'http://localhost:3000'}/book`;
+            apiEndpoint = `${ADMIN_API_URL}/book`;
         }
 
         let formData = new FormData();
