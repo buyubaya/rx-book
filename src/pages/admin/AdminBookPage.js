@@ -20,6 +20,7 @@ class AdminBookPage extends React.Component {
         this.hideForm = this.hideForm.bind(this);
         this._removeItemFromBookList = this._removeItemFromBookList.bind(this);
         this._addItemToBookList = this._addItemToBookList.bind(this);
+        this._handleSubmitSuccess = this._handleSubmitSuccess.bind(this);
     }
 
     static childContextTypes = {
@@ -27,8 +28,10 @@ class AdminBookPage extends React.Component {
         editItem: PropTypes.object,
         handleEdit: PropTypes.func,
         handleAdd: PropTypes.func,
+        hideForm: PropTypes.func,
         _removeItemFromBookList: PropTypes.func,
-        _addItemToBookList: PropTypes.func
+        _addItemToBookList: PropTypes.func,
+        _handleSubmitSuccess: PropTypes.func
     };
 
     getChildContext(){
@@ -37,12 +40,14 @@ class AdminBookPage extends React.Component {
             editItem: this.state.editItem,
             handleEdit: this.handleEdit,
             handleAdd: this.handleAdd,
+            hideForm: this.hideForm,
             _removeItemFromBookList: this._removeItemFromBookList,
-            _addItemToBookList: this._addItemToBookList
+            _addItemToBookList: this._addItemToBookList,
+            _handleSubmitSuccess: this._handleSubmitSuccess
         });
     }
 
-    componentWillMount(){
+    componentDidMount(){
         fetch(ADMIN_API_URL + '/book')
         .then(res => res.json())
         .then(data => {
@@ -81,6 +86,20 @@ class AdminBookPage extends React.Component {
         let { bookList } = this.state;
         bookList.push(item);
         this.setState({ bookList });
+    }
+
+    _handleSubmitSuccess(data){
+        console.log('AFTER SUBMIT');
+        
+        // const { editItem } = this.props;
+
+        // if(editItem === null){
+        //     const { _addItemToBookList } = this._addItemToBookList;
+        //     _addItemToBookList(data);
+        //     console.log('ADD ITEM TO BOOK LIST', data);
+        // }
+
+        this.hideForm();
     }
 
     render(){
