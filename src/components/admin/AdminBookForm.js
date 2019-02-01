@@ -135,11 +135,11 @@ class AdminBookForm extends React.Component {
     };
 
     componentDidMount() {
-        const cPromise = fetch('http://nodejs-book-api.herokuapp.com/category')
+        const cPromise = fetch(`${ADMIN_API_URL}/category`)
             .then(res => res.json());
-        const aPromise = fetch('http://nodejs-book-api.herokuapp.com/author')
+        const aPromise = fetch(`${ADMIN_API_URL}/author`)
             .then(res => res.json());
-        const bPromise = fetch('http://nodejs-book-api.herokuapp.com/brand')
+        const bPromise = fetch(`${ADMIN_API_URL}/brand`)
             .then(res => res.json());
 
         Promise.all([cPromise, aPromise, bPromise])

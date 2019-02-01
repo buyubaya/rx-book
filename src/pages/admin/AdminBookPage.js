@@ -69,12 +69,9 @@ class AdminBookPage extends React.Component {
 
     _removeItemFromBookList(id){
         console.log('DELETE', id);
-        fetch(`https://nodejs-book-api.herokuapp.com/book/${id}`, {
+        fetch(`${ADMIN_API_URL}/book/${id}`, {
             method: 'DELETE'
         })
-        // fetch(`http://localhost:3000/book/${id}`, {
-        //     method: 'DELETE'
-        // })
         .then(res => res.json())
         .then(json => {
             let { bookList } = this.state;
