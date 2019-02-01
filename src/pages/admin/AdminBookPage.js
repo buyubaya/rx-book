@@ -69,7 +69,7 @@ class AdminBookPage extends React.Component {
 
     _removeItemFromBookList(id){
         console.log('DELETE', id);
-        fetch(`http://localhost:4000/book/${id}`, {
+        fetch(`${ADMIN_API_URL}/book/${id}`, {
             method: 'DELETE'
         })
         .then(res => res.json())
@@ -88,16 +88,24 @@ class AdminBookPage extends React.Component {
         this.setState({ bookList });
     }
 
-    _handleSubmitSuccess(data){
-        console.log('AFTER SUBMIT');
-        
-        // const { editItem } = this.props;
+    _handleSubmitSuccess(data){        
+        let { bookList, editItem } = this.state;
 
-        // if(editItem === null){
-        //     const { _addItemToBookList } = this._addItemToBookList;
-        //     _addItemToBookList(data);
-        //     console.log('ADD ITEM TO BOOK LIST', data);
-        // }
+        if(editItem === null){
+            this._addItemToBookList(data);
+        }
+        else {
+            bookList = bookList.map(item => {
+                console.log(item, data);
+                if(item._id === data._id){
+                    item.category = { _id: data.category };
+                    item.author = { _id: data.author };
+                    item.brand = { _id: data.brand };
+                }
+                return item;
+            });
+            this.setState({ bookList });
+        }
 
         this.hideForm();
     }

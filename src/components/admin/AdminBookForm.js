@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import FormBuilder from './FormBuilder';
+import { ADMIN_API_URL } from '../../constants/ApiUrls';
 
 
 const BookFormBuilder = withFormik({
@@ -44,11 +45,11 @@ const BookFormBuilder = withFormik({
         const id = editItem ? editItem._id : '';
         if (editItem) {
             method = 'PUT';
-            apiEndpoint = `http://nodejs-book-api.herokuapp.com/book/${id}`;
+            apiEndpoint = `${ADMIN_API_URL}/book/${id}`;
         }
         else {
             method = 'POST';
-            apiEndpoint = 'http://nodejs-book-api.herokuapp.com/book';
+            apiEndpoint = `${ADMIN_API_URL}/book`;
         }
 
         let formData = new FormData();
@@ -56,23 +57,19 @@ const BookFormBuilder = withFormik({
             formData.append(field, values[field]);
         }
 
-        // fetch(apiEndpoint, {
-        //     method,
-        //     body: formData
-        // })
-        // .then(res => res.json())
-        // .then(json => {
-        //     setSubmitting(false);
-        //     resetForm();
-        //     if (onSubmitSuccess) {
-        //         onSubmitSuccess(json);
-        //     }
-        // })
-        // .catch(err => console.log(err));
-
-        if (onSubmitSuccess) {
-            onSubmitSuccess('HAHA');
-        }
+        fetch(apiEndpoint, {
+            method,
+            body: formData
+        })
+        .then(res => res.json())
+        .then(json => {
+            setSubmitting(false);
+            resetForm();
+            if (onSubmitSuccess) {
+                onSubmitSuccess(json);
+            }
+        })
+        .catch(err => console.log(err));
     },
 
     validateOnChange: false,
@@ -138,11 +135,11 @@ class AdminBookForm extends React.Component {
     componentDidMount() {
         this._isMounted = true;
 
-        const cPromise = fetch('http://nodejs-book-api.herokuapp.com/category')
+        const cPromise = fetch(`${ADMIN_API_URL}/category`)
             .then(res => res.json());
-        const aPromise = fetch('http://nodejs-book-api.herokuapp.com/author')
+        const aPromise = fetch(`${ADMIN_API_URL}/author`)
             .then(res => res.json());
-        const bPromise = fetch('http://nodejs-book-api.herokuapp.com/brand')
+        const bPromise = fetch(`${ADMIN_API_URL}/brand`)
             .then(res => res.json());
 
         Promise.all([cPromise, aPromise, bPromise])
@@ -189,7 +186,7 @@ class AdminBookForm extends React.Component {
     }
 
     _handleSubmitSuccess(data) {
-        this.context._handleSubmitSuccess && this.context._handleSubmitSuccess(this);
+        this.context._handleSubmitSuccess && this.context._handleSubmitSuccess(data);
     }
 
     render() {
