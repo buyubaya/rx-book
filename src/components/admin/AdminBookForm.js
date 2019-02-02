@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import FormBuilder from './FormBuilder';
-import { ADMIN_API_URL } from '../../constants/ApiUrls';
+import { 
+    BOOK_API_URL,
+    CATEGORY_API_URL,
+    AUTHOR_API_URL,
+    BRAND_API_URL
+} from '../../constants/ApiUrls';
 
 
 const BookFormBuilder = withFormik({
@@ -45,13 +50,11 @@ const BookFormBuilder = withFormik({
         const id = editItem ? editItem._id : '';
         if (editItem) {
             method = 'PUT';
-            // apiEndpoint = `${'http://localhost:3000'}/book/${id}`;
-            apiEndpoint = `${ADMIN_API_URL}/book/${id}`;
+            apiEndpoint = `${BOOK_API_URL}/${id}`;
         }
         else {
             method = 'POST';
-            // apiEndpoint = `${'http://localhost:3000'}/book`;
-            apiEndpoint = `${ADMIN_API_URL}/book`;
+            apiEndpoint = `${BOOK_API_URL}`;
         }
 
         let formData = new FormData();
@@ -135,11 +138,11 @@ class AdminBookForm extends React.Component {
     };
 
     componentDidMount() {
-        const cPromise = fetch(`${ADMIN_API_URL}/category`)
+        const cPromise = fetch(`${CATEGORY_API_URL}`)
             .then(res => res.json());
-        const aPromise = fetch(`${ADMIN_API_URL}/author`)
+        const aPromise = fetch(`${AUTHOR_API_URL}`)
             .then(res => res.json());
-        const bPromise = fetch(`${ADMIN_API_URL}/brand`)
+        const bPromise = fetch(`${BRAND_API_URL}`)
             .then(res => res.json());
 
         Promise.all([cPromise, aPromise, bPromise])

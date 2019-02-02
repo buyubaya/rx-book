@@ -27,7 +27,7 @@ const Book = ({item, isAlert, showAlert, hideAlert, cart, addToCart}) => {
 
 	const flying = (item) => {
 		if(!cartClicked){
-			if(isExist(item.id) === false){
+			if(isExist(item._id) === false){
 				addToCart({...item, qty: 1});
 
 				cartClicked = true;
@@ -78,7 +78,7 @@ const Book = ({item, isAlert, showAlert, hideAlert, cart, addToCart}) => {
 	return(        
 		<div className="card-product mb40">
 			<div className="card-img">
-				<Link to={'product/'+item.id}><img className="w100p" src={API_URL+'/public/images/'+item.img} alt="" ref={el => cardImg = el} /></Link>
+				<Link to={'product/'+item._id}><img className="w100p" src={item.img} alt="" ref={el => cardImg = el} /></Link>
 			</div>
 			<div className="card-content pt10">
 				<p className="card-name text-center">{item.name}</p>

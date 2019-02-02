@@ -13,6 +13,7 @@ class AdminBookList extends React.Component {
 
     static contextTypes = {
         bookList: PropTypes.array,
+        count: PropTypes.number,
         editItem: PropTypes.object,
         handleEdit: PropTypes.func,
         handleAdd: PropTypes.func,
@@ -34,7 +35,7 @@ class AdminBookList extends React.Component {
     }
 
     render(){
-        const { bookList } = this.context;
+        const { bookList, count } = this.context;
 
         return(
             <div className='admin-table-area'>

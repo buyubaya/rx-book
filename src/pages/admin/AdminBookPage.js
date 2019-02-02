@@ -2,8 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AdminBookList from '../../components/admin/AdminBookList';
 import AdminBookForm from '../../components/admin/AdminBookForm';
-import { ADMIN_API_URL } from '../../constants/ApiUrls';
+// import { ADMIN_API_URL } from '../../constants/ApiUrls';
 import Pagination from '../../components/admin/Pagination';
+import {
+    BOOK_API_URL,
+    CATEGORY_API_URL,
+    AUTHOR_API_URL,
+    BRAND_API_URL
+} from '../../constants/ApiUrls';
+const ADMIN_API_URL = 'http://localhost:3000';
 
 
 class AdminBookPage extends React.Component {
@@ -13,7 +20,13 @@ class AdminBookPage extends React.Component {
         this.state = {
             editItem: null,
             addItem: false,
-            bookList: []
+            bookList: [],
+            maxPage: 5,
+            count: 0,
+            filterParams: {
+                page: 1,
+                limit: 5
+            }
         };
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -22,10 +35,12 @@ class AdminBookPage extends React.Component {
         this._removeItemFromBookList = this._removeItemFromBookList.bind(this);
         this._addItemToBookList = this._addItemToBookList.bind(this);
         this._handleSubmitSuccess = this._handleSubmitSuccess.bind(this);
+        this._toPage = this._toPage.bind(this);
     }
 
     static childContextTypes = {
         bookList: PropTypes.array,
+        count: PropTypes.number,
         editItem: PropTypes.object,
         handleEdit: PropTypes.func,
         handleAdd: PropTypes.func,
@@ -38,6 +53,7 @@ class AdminBookPage extends React.Component {
     getChildContext(){
         return({
             bookList: this.state.bookList,
+            count: this.state.count,
             editItem: this.state.editItem,
             handleEdit: this.handleEdit,
             handleAdd: this.handleAdd,
@@ -49,10 +65,21 @@ class AdminBookPage extends React.Component {
     }
 
     componentDidMount(){
-        fetch(ADMIN_API_URL + '/book')
+        this.fetchBookAPI();
+    }
+
+    fetchBookAPI(filterParams={}){
+        let query = [];
+        for(let x in filterParams){
+            const pair = `${x}=${filterParams[x]}`;
+            query.push(pair);
+        }
+        query = query.length > 0 ? '?' + query.join('&') : '';
+
+        fetch(BOOK_API_URL + query)
         .then(res => res.json())
         .then(data => {
-            this.setState({ bookList: data });
+            this.setState({ bookList: data.list, count: data.count });
         });
     }
 
@@ -70,7 +97,7 @@ class AdminBookPage extends React.Component {
 
     _removeItemFromBookList(id){
         console.log('DELETE', id);
-        fetch(`${ADMIN_API_URL}/book/${id}`, {
+        fetch(`${BOOK_API_URL}/${id}`, {
             method: 'DELETE'
         })
         .then(res => res.json())
@@ -110,8 +137,17 @@ class AdminBookPage extends React.Component {
         this.hideForm();
     }
 
+    _toPage(p){
+        this.setState(
+            state => ({
+                filterParams: { ...state.filterParams, page: p }
+            }),
+            () => this.fetchBookAPI(this.state.filterParams)
+        );
+    }
+
     render(){
-        const { editItem, addItem } = this.state;
+        const { editItem, addItem, maxPage, count, filterParams: { page, limit } } = this.state;
 
         return(
             <div className='admin-page book-page'>
@@ -125,11 +161,11 @@ class AdminBookPage extends React.Component {
                     </div>
                 }
                 <Pagination 
-                    page={5}
-                    limit={5}
-                    maxPage={5}
-                    count={50}
-                    toPage={p => console.log('PAGE', p)}
+                    page={page}
+                    limit={limit}
+                    maxPage={maxPage}
+                    count={count}
+                    toPage={this._toPage}
                 />
             </div>
         );
