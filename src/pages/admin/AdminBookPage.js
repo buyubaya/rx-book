@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AdminBookList from '../../components/admin/AdminBookList';
 import AdminBookForm from '../../components/admin/AdminBookForm';
 import { ADMIN_API_URL } from '../../constants/ApiUrls';
+import Pagination from '../../components/admin/Pagination';
 
 
 class AdminBookPage extends React.Component {
@@ -123,6 +124,13 @@ class AdminBookPage extends React.Component {
                         </div>
                     </div>
                 }
+                <Pagination 
+                    page={5}
+                    limit={5}
+                    maxPage={5}
+                    count={50}
+                    toPage={p => console.log('PAGE', p)}
+                />
             </div>
         );
     }
