@@ -2,15 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AdminBookList from '../../components/admin/AdminBookList';
 import AdminBookForm from '../../components/admin/AdminBookForm';
-// import { ADMIN_API_URL } from '../../constants/ApiUrls';
 import Pagination from '../../components/admin/Pagination';
 import {
     BOOK_API_URL,
+    ADMIN_API_URL,
     CATEGORY_API_URL,
     AUTHOR_API_URL,
     BRAND_API_URL
 } from '../../constants/ApiUrls';
-const ADMIN_API_URL = 'http://localhost:3000';
 
 
 class AdminBookPage extends React.Component {
