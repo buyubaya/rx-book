@@ -5,6 +5,7 @@ import productReducer from './reducers/productReducer';
 import filterReducer from './reducers/filterReducer';
 import statusReducer from './reducers/statusReducer';
 import cartReducer from './reducers/cartReducer';
+import userReducer from './reducers/userReducer';
 // EPICS
 import productEpic from './epics/productEpic';
 import filterEpic from './epics/filterEpic';
@@ -15,7 +16,8 @@ const reducers = combineReducers({
     product: productReducer, 
     status: statusReducer, 
     filter: filterReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    user: userReducer
 });
 
 

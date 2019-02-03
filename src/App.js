@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 import 'rxjs';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import BookList from './components/BookList';
+import HomePage from './pages/HomePage';
 import AdminPage from './pages/admin/AdminPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminBookPage from './pages/admin/AdminBookPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
+import AdminLogoutPage from './pages/admin/AdminLogoutPage';
 
 
 class App extends Component {
@@ -14,8 +15,9 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				<Switch>
-					<Route path='/' exact component={BookList} />
-					<Route path='/admin/login' exact component={AdminLoginPage} />
+					<Route path='/' exact component={HomePage} />
+					<Route path='/user/login' exact component={AdminLoginPage} />
+					<Route path='/user/logout' exact component={AdminLogoutPage} />
 					<Route path='/admin'>
 						<AdminPage>
 							<Route path='/admin/dashboard' component={AdminDashboardPage} />

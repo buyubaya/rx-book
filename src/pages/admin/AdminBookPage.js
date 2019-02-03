@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import AdminBookList from '../../components/admin/AdminBookList';
 import AdminBookForm from '../../components/admin/AdminBookForm';
 import Pagination from '../../components/admin/Pagination';
@@ -46,7 +47,8 @@ class AdminBookPage extends React.Component {
         hideForm: PropTypes.func,
         _removeItemFromBookList: PropTypes.func,
         _addItemToBookList: PropTypes.func,
-        _handleSubmitSuccess: PropTypes.func
+        _handleSubmitSuccess: PropTypes.func,
+        user: PropTypes.object
     };
 
     getChildContext(){
@@ -59,7 +61,8 @@ class AdminBookPage extends React.Component {
             hideForm: this.hideForm,
             _removeItemFromBookList: this._removeItemFromBookList,
             _addItemToBookList: this._addItemToBookList,
-            _handleSubmitSuccess: this._handleSubmitSuccess
+            _handleSubmitSuccess: this._handleSubmitSuccess,
+            user: this.props.user
         });
     }
 
@@ -97,17 +100,23 @@ class AdminBookPage extends React.Component {
     }
 
     _removeItemFromBookList(id){
-        console.log('DELETE', id);
-        fetch(`${BOOK_API_URL}/${id}`, {
-            method: 'DELETE'
-        })
-        .then(res => res.json())
-        .then(json => {
-            let { bookList } = this.state;
-            bookList = bookList.filter(item => item._id !== id)
-            this.setState({ bookList });
-        })
-        .catch(err => console.log('DELETE ERROR', err));
+        const { user } = this.props;
+        if(user && user.token){
+            console.log('DELETE', id);
+            fetch(`${BOOK_API_URL}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            .then(res => res.json())
+            .then(json => {
+                let { bookList } = this.state;
+                bookList = bookList.filter(item => item._id !== id)
+                this.setState({ bookList });
+            })
+            .catch(err => console.log('DELETE ERROR', err));
+        }
     }
 
     _addItemToBookList(item){
@@ -166,7 +175,7 @@ class AdminBookPage extends React.Component {
                     (editItem || addItem) &&
                     <div className='overlay' onClick={this.hideForm}>
                         <div className='overlay-inner' onClick={this.stopPropagation}>
-                            <AdminBookForm editItem={editItem} />
+                            <AdminBookForm />
                         </div>
                     </div>
                 }
@@ -183,4 +192,8 @@ class AdminBookPage extends React.Component {
 }
 
 
-export default AdminBookPage;
+export default connect(
+    state => ({
+        user: state.user
+    })
+)(AdminBookPage);

@@ -2533,7 +2533,7 @@ body {
 
 
 /* ADMIN */
-.admin-nav {
+.admin-header {
 	margin-bottom: 50px;
 	position: relative;
 	padding-left: 5px;
@@ -2541,7 +2541,7 @@ body {
 	text-align: center;
 }
 
-.admin-nav:before {
+.admin-header:before {
 	content: '';
 	display: block;
 	background: #a1822b;

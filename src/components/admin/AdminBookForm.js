@@ -31,8 +31,20 @@ const BookFormBuilder = withFormik({
             errors.name = 'Name Required';
         }
 
+        if (!values.price) {
+            errors.price = 'Price Required';
+        }
+
         if (!values.category) {
             errors.category = 'Category Required';
+        }
+
+        if (!values.author) {
+            errors.author = 'Author Required';
+        }
+
+        if (!values.brand) {
+            errors.brand = 'Brand Required';
         }
 
         return errors;
@@ -42,9 +54,9 @@ const BookFormBuilder = withFormik({
         console.log('RESET', values);
     },
 
-    handleSubmit: (values, { setSubmitting, validateForm, resetForm, props: { editItem, onSubmitSuccess } }) => {
+    handleSubmit: (values, { setSubmitting, validateForm, resetForm, props: { editItem, onSubmitSuccess, token }, setError }) => {
         validateForm();
-
+        console.log('TOKEN', token);
         let method;
         let apiEndpoint;
         const id = editItem ? editItem._id : '';
@@ -61,9 +73,12 @@ const BookFormBuilder = withFormik({
         for (let field in values) {
             formData.append(field, values[field]);
         }
-        
+
         fetch(apiEndpoint, {
             method,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         })
         .then(res => res.json())
@@ -74,7 +89,7 @@ const BookFormBuilder = withFormik({
                 onSubmitSuccess(json);
             }
         })
-        .catch(err => console.log(err));
+        .catch(err => setError({_form: err}));
     },
 
     validateOnChange: false,
@@ -131,6 +146,7 @@ class AdminBookForm extends React.Component {
 
     static contextTypes = {
         editItem: PropTypes.object,
+        user: PropTypes.object,
         handleEdit: PropTypes.func,
         hideForm: PropTypes.func,
         _addItemToBookList: PropTypes.func,
@@ -189,13 +205,15 @@ class AdminBookForm extends React.Component {
     }
 
     render() {
-        const { editItem } = this.props;
+        const { editItem, user } = this.context;
+        const token = user && user.token;
 
         return (
             <BookFormBuilder
                 formBuilderData={this.state.formBuilderData}
                 editItem={editItem}
                 onSubmitSuccess={this._handleSubmitSuccess}
+                token={token}
             />
         );
     }
