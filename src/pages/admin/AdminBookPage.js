@@ -64,7 +64,8 @@ class AdminBookPage extends React.Component {
     }
 
     componentDidMount(){
-        this.fetchBookAPI();
+        const { filterParams } = this.state;
+        this.fetchBookAPI(filterParams);
     }
 
     fetchBookAPI(filterParams={}){
@@ -83,6 +84,7 @@ class AdminBookPage extends React.Component {
     }
 
     handleEdit(item){
+        console.log('HANDLE EDIT', item);
         this.setState({ editItem: item, addItem: false });
     }
 
@@ -117,6 +119,21 @@ class AdminBookPage extends React.Component {
         this.setState({ bookList });
     }
 
+    _editItemFromBookList(item){
+        let { bookList, editItem } = this.state;
+
+        for(let i=0, len=bookList.length; i<len; i++){
+            if(bookList[i]._id === editItem._id){
+                bookList[i] = { ...item };
+                bookList[i]['category'] = { _id: item.category };
+                bookList[i]['author'] = { _id: item.author };
+                bookList[i]['brand'] = { _id: item.brand };
+                break;
+            }
+        }
+        this.setState({ bookList });
+    }
+
     _handleSubmitSuccess(data){
         let { bookList, editItem } = this.state;
 
@@ -124,13 +141,7 @@ class AdminBookPage extends React.Component {
             this._addItemToBookList(data);
         }
         else {            
-            for(let i=0, len=bookList.length; i<len; i++){
-                if(bookList[i]._id === editItem._id){
-                    bookList[i] = data;
-                    break;
-                }
-            }
-            this.setState({ bookList });
+            this._editItemFromBookList(data);
         }
 
         this.hideForm();

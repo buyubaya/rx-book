@@ -61,7 +61,7 @@ const BookFormBuilder = withFormik({
         for (let field in values) {
             formData.append(field, values[field]);
         }
-
+        
         fetch(apiEndpoint, {
             method,
             body: formData
