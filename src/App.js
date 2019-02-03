@@ -15,15 +15,15 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				<Switch>
-					<Route path='/' exact component={HomePage} />
 					<Route path='/user/login' exact component={AdminLoginPage} />
 					<Route path='/user/logout' exact component={AdminLogoutPage} />
 					<Route path='/admin'>
 						<AdminPage>
-							<Route path='/admin/dashboard' component={AdminDashboardPage} />
-							<Route path='/admin/book' component={AdminBookPage} />
+							<Route path='/admin/dashboard' exact component={AdminDashboardPage} />
+							<Route path='/admin/book' exact component={AdminBookPage} />
 						</AdminPage>
 					</Route>
+					<Route path='/' component={HomePage} />
 				</Switch>
 			</BrowserRouter>
 		);
