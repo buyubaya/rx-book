@@ -15,6 +15,7 @@ class App extends Component {
 		return (
 			<BrowserRouter basename={process.env.PUBLIC_URL}>
 				<Switch>
+					<Route path='/' exact component={HomePage} />
 					<Route path='/user/login' exact component={AdminLoginPage} />
 					<Route path='/user/logout' exact component={AdminLogoutPage} />
 					<Route path='/admin'>
@@ -23,7 +24,6 @@ class App extends Component {
 							<Route path='/admin/book' exact component={AdminBookPage} />
 						</AdminPage>
 					</Route>
-					<Route path='/' component={HomePage} />
 				</Switch>
 			</BrowserRouter>
 		);
