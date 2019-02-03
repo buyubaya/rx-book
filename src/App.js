@@ -13,7 +13,7 @@ import AdminLogoutPage from './pages/admin/AdminLogoutPage';
 class App extends Component {
 	render(){
 		return (
-			<BrowserRouter>
+			<BrowserRouter basename={process.env.PUBLIC_URL}>
 				<Switch>
 					<Route path='/user/login' exact component={AdminLoginPage} />
 					<Route path='/user/logout' exact component={AdminLogoutPage} />
