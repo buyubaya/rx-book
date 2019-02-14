@@ -104,7 +104,7 @@ export default connect(
         cart: state.cart
     }),
     dispatch => ({
-        editQty: (id, qty) => dispatch({type: EDIT_CART_ITEM, payload: { id, qty }}),
-        removeFromCart: id => dispatch({type: REMOVE_FROM_CART, payload: { id }})
+        editQty: (id, qty) => dispatch({type: EDIT_CART_ITEM, payload: { _id: id, qty }}),
+        removeFromCart: id => dispatch({type: REMOVE_FROM_CART, payload: { _id: id }})
     })
 )(CartTable);
