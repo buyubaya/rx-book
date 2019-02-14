@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { API_URL, fetchData } from '../utils/ApiUtils';
+// import { BASE_API_URL, API_URL, fetchData } from '../utils/ApiUtils';
+import { BASE_API_URL } from '../constants/ApiUrls';
 import {
     filterRequest
 } from '../redux/actions';
@@ -18,10 +19,12 @@ class FilterBox extends React.Component {
 
     componentWillMount(){
         if(this.props.filterName){
-            fetchData(API_URL+'/api/'+this.props.filterName)
+            fetch(`${BASE_API_URL}/api/${this.props.filterName}`)
+            .then(res => res.json())
             .then(data => {
-            	this.setState({ list: data });
+                this.setState({ list: data });
             })
+            .catch(err => console.log('ERROR', err));
         }
     }
 
@@ -39,11 +42,15 @@ class FilterBox extends React.Component {
         return(
             this.state.list.length > 0
             ?
-            <select className="filter-box" value={filterParams[filterName] || ''} onChange={this.handleFilter}>
+            <select 
+                className="filter-box" 
+                value={filterParams[filterName] || ''} 
+                onChange={this.handleFilter}
+            >
                 <option value={''} key={'empty'}>{placeholder || 'Select'}</option>
                 {
                     this.state.list.map(item =>
-                        <option key={item.id} value={item.id}>
+                        <option key={item._id} value={item._id}>
                             {item.name}
                         </option>
                     )

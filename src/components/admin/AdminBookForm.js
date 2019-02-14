@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import FormBuilder from './FormBuilder';
-import { ADMIN_API_URL } from '../../constants/ApiUrls';
+import { 
+    BOOK_API_URL,
+    CATEGORY_API_URL,
+    AUTHOR_API_URL,
+    BRAND_API_URL
+} from '../../constants/ApiUrls';
 
 
 const BookFormBuilder = withFormik({
@@ -16,7 +21,7 @@ const BookFormBuilder = withFormik({
         category: editItem ? editItem.category._id : '',
         author: editItem ? editItem.author._id : '',
         brand: editItem ? editItem.brand._id : '',
-        description: editItem ? editItem.description : ''
+        description: (editItem && editItem.description !== 'null') ? editItem.description : ''
     }),
 
     validate: values => {
@@ -26,8 +31,20 @@ const BookFormBuilder = withFormik({
             errors.name = 'Name Required';
         }
 
+        if (!values.price) {
+            errors.price = 'Price Required';
+        }
+
         if (!values.category) {
             errors.category = 'Category Required';
+        }
+
+        if (!values.author) {
+            errors.author = 'Author Required';
+        }
+
+        if (!values.brand) {
+            errors.brand = 'Brand Required';
         }
 
         return errors;
@@ -37,19 +54,19 @@ const BookFormBuilder = withFormik({
         console.log('RESET', values);
     },
 
-    handleSubmit: (values, { setSubmitting, validateForm, resetForm, props: { editItem, onSubmitSuccess } }) => {
+    handleSubmit: (values, { setSubmitting, validateForm, resetForm, props: { editItem, onSubmitSuccess, token }, setError }) => {
         validateForm();
-
+        console.log('TOKEN', token);
         let method;
         let apiEndpoint;
         const id = editItem ? editItem._id : '';
         if (editItem) {
             method = 'PUT';
-            apiEndpoint = `${ADMIN_API_URL}/book/${id}`;
+            apiEndpoint = `${BOOK_API_URL}/${id}`;
         }
         else {
             method = 'POST';
-            apiEndpoint = `${ADMIN_API_URL}/book`;
+            apiEndpoint = `${BOOK_API_URL}`;
         }
 
         let formData = new FormData();
@@ -59,6 +76,9 @@ const BookFormBuilder = withFormik({
 
         fetch(apiEndpoint, {
             method,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         })
         .then(res => res.json())
@@ -69,7 +89,7 @@ const BookFormBuilder = withFormik({
                 onSubmitSuccess(json);
             }
         })
-        .catch(err => console.log(err));
+        .catch(err => setError({_form: err}));
     },
 
     validateOnChange: false,
@@ -126,6 +146,7 @@ class AdminBookForm extends React.Component {
 
     static contextTypes = {
         editItem: PropTypes.object,
+        user: PropTypes.object,
         handleEdit: PropTypes.func,
         hideForm: PropTypes.func,
         _addItemToBookList: PropTypes.func,
@@ -133,13 +154,11 @@ class AdminBookForm extends React.Component {
     };
 
     componentDidMount() {
-        this._isMounted = true;
-
-        const cPromise = fetch(`${ADMIN_API_URL}/category`)
+        const cPromise = fetch(`${CATEGORY_API_URL}`)
             .then(res => res.json());
-        const aPromise = fetch(`${ADMIN_API_URL}/author`)
+        const aPromise = fetch(`${AUTHOR_API_URL}`)
             .then(res => res.json());
-        const bPromise = fetch(`${ADMIN_API_URL}/brand`)
+        const bPromise = fetch(`${BRAND_API_URL}`)
             .then(res => res.json());
 
         Promise.all([cPromise, aPromise, bPromise])
@@ -165,10 +184,6 @@ class AdminBookForm extends React.Component {
             });
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     _getChildCategory(data) {
         let parents = [];
 
@@ -190,13 +205,15 @@ class AdminBookForm extends React.Component {
     }
 
     render() {
-        const { editItem } = this.props;
+        const { editItem, user } = this.context;
+        const token = user && user.token;
 
         return (
             <BookFormBuilder
                 formBuilderData={this.state.formBuilderData}
                 editItem={editItem}
                 onSubmitSuccess={this._handleSubmitSuccess}
+                token={token}
             />
         );
     }

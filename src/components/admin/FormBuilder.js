@@ -21,6 +21,22 @@ class FormBuilder extends React.Component {
                         className='input' 
                     />
                 );
+            case 'password':
+                return(
+                    <Field 
+                        type='password' 
+                        name={item.fieldName} 
+                        className='input' 
+                    />
+                );
+            case 'email':
+                return(
+                    <Field 
+                        type='email' 
+                        name={item.fieldName} 
+                        className='input' 
+                    />
+                );
             case 'number':
                 return(
                     <Field 
@@ -84,6 +100,7 @@ class FormBuilder extends React.Component {
         const {
             values,
             touched,
+            error,
             errors,
             handleChange,
             handleBlur,
@@ -92,7 +109,6 @@ class FormBuilder extends React.Component {
             setFieldValue,
             formBuilderData
         } = this.props;
-
         
         return (
             <div className='admin-form-area' onClick={this.stopPropagation}>
@@ -111,14 +127,20 @@ class FormBuilder extends React.Component {
                         <div className='input-errors-area'>
                             {
                                 Object.keys(errors).map(k => {
-                                    return <div className="input-error" key={k}>{errors[k]}</div>;
+                                    return <div className='input-error' key={k}>{errors[k]}</div>;
                                 })
                             }
                         </div>
                     }
+                    {
+                        error &&
+                        <div className='input-errors-area'>
+                            <div className='input-error'>{error._form}</div>
+                        </div>
+                    }
 
-                    <button type="button" className='btn-form mr20' onClick={handleReset}>Reset</button>
-                    <button type="submit" className='btn-form'>Submit</button>
+                    <button type='button' className='btn-form mr20' onClick={handleReset}>Reset</button>
+                    <button type='submit' className='btn-form'>Submit</button>
                 </form>
             </div>
         );

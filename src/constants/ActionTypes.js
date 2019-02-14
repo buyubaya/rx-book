@@ -16,3 +16,6 @@ export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const EDIT_CART_ITEM = 'EDIT_CART_ITEM';
 export const DESTROY_CART = 'DESTROY_CART';
+
+// USER
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';

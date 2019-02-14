@@ -55,7 +55,7 @@ class BookList extends Component {
 					<div className='filter-row row'>
 						<div className='column column-4-sm'>
 							<FilterBox 
-								filterName='cate'
+								filterName='category'
 								placeholder='Select category'
 							/>
 						</div>
@@ -81,11 +81,16 @@ class BookList extends Component {
                 <div className='card-list'>
                     {
                         list && list.map(item =>
-                            <Book item={item} key={item.id} />
+                            <Book item={item} key={item._id} />
                         )
                     }
                 </div>
-                <Pagination page={filter.page} limit={filter.limit} count={count} maxPage={5} />
+				<Pagination 
+					page={filter.page} 
+					limit={filter.limit}
+					maxPage={5} 
+					count={count} 
+				/>
             </div>
 		);
 	}

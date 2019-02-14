@@ -62,19 +62,19 @@ class CartTable extends React.Component {
                             <tbody>
                                 {
                                 cart.list.map(item =>
-                                        <tr key={item.id}>
-                                            <td className='td-img'><img className='w100p' src={API_URL+'/public/images/'+item.img} alt="" /></td>
+                                        <tr key={item._id}>
+                                            <td className='td-img'><img className='w100p' src={item.img} alt={item.name} /></td>
                                             <td className='td-name'>{item.name}</td>
                                             <td className='td-qty'>
                                                 <div className='qty-group'>
-                                                    <span className='btn-edit-cart' onClick={() => this.editQty(item.id, item.qty + 1)}>+</span>
+                                                    <span className='btn-edit-cart' onClick={() => this.editQty(item._id, item.qty + 1)}>+</span>
                                                     <span className='btn-edit-cart'>{item.qty}</span>
-                                                    <span className='btn-edit-cart' onClick={() => this.editQty(item.id, item.qty - 1)}>-</span>
+                                                    <span className='btn-edit-cart' onClick={() => this.editQty(item._id, item.qty - 1)}>-</span>
                                                 </div>
                                             </td>
                                             <td className='td-price-unit'>{item.price}</td>
                                             <td className='td-price'>{item.price * item.qty}</td>
-                                            <td className='td-edit'><span className='btn-edit-cart' onClick={() => this.removeFromCart(item.id)}>X</span></td>
+                                            <td className='td-edit'><span className='btn-edit-cart' onClick={() => this.removeFromCart(item._id)}>X</span></td>
                                         </tr>
                                     )
                                 }

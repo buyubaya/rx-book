@@ -2,24 +2,26 @@ import React, { Component } from 'react';
 import './App.css';
 import 'rxjs';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import BookList from './components/BookList';
+import HomePage from './pages/HomePage';
 import AdminPage from './pages/admin/AdminPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminBookPage from './pages/admin/AdminBookPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
+import AdminLogoutPage from './pages/admin/AdminLogoutPage';
 
 
 class App extends Component {
 	render(){
 		return (
-			<BrowserRouter>
+			<BrowserRouter basename={process.env.PUBLIC_URL}>
 				<Switch>
-					<Route path='/' exact component={BookList} />
-					<Route path='/admin/login' exact component={AdminLoginPage} />
+					<Route path='/' exact component={HomePage} />
+					<Route path='/user/login' exact component={AdminLoginPage} />
+					<Route path='/user/logout' exact component={AdminLogoutPage} />
 					<Route path='/admin'>
 						<AdminPage>
-							<Route path='/admin/dashboard' component={AdminDashboardPage} />
-							<Route path='/admin/book' component={AdminBookPage} />
+							<Route path='/admin/dashboard' exact component={AdminDashboardPage} />
+							<Route path='/admin/book' exact component={AdminBookPage} />
 						</AdminPage>
 					</Route>
 				</Switch>
